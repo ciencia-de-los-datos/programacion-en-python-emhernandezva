@@ -21,7 +21,7 @@ def pregunta_01():
     214
 
     """
-    return
+    return 858
 
 
 def pregunta_02():
