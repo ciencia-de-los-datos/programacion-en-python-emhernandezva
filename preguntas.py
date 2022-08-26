@@ -11,17 +11,21 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
-
+def datos():
+    with open ("/data.csv",mode='r') as file:
+        listFilas=file.readlines()
+        lstFilas=[[i.replace('\n','').split(" ")] for i in listFilas]
+    return listFilas
 
 def pregunta_01():
     """
     Retorne la suma de la segunda columna.
-
+    listFilas=datos()
     Rta/
     214
-
+    
     """
-    return 858
+    return sum([i[1] for i in listFilas)
 
 
 def pregunta_02():
