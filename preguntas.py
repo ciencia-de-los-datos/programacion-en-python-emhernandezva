@@ -11,10 +11,18 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+
+
+
+
+from operator import itemgetter
+from functools import reduce
+
 def datos():
-    with open ("/data.csv",mode='r') as file:
+    with open ("data.csv",mode='r') as file:
         listFilas=file.readlines()
-        lstFilas=[[i.replace('\n','').split(" ")] for i in listFilas]
+        listFilas=[i.replace('\n','') for i in listFilas]
+        listFilas=[i.split('\t') for i in listFilas]
     return listFilas
 
 def pregunta_01():
@@ -23,16 +31,15 @@ def pregunta_01():
     listFilas=datos()
     Rta/
     214
-    
     """
-    return sum([i[1] for i in listFilas)
+    Rta=sum([int(i[1]) for i in datos()])
 
+    return Rta
 
 def pregunta_02():
     """
     Retorne la cantidad de registros por cada letra de la primera columna como la lista
     de tuplas (letra, cantidad), ordendas alfabéticamente.
-
     Rta/
     [
         ("A", 8),
@@ -43,7 +50,15 @@ def pregunta_02():
     ]
 
     """
-    return
+    dictPalabras={}
+    listFilas=datos()
+    listTuplasPalabras=[(i[0],1) for i in listFilas]
+    for k, v in listTuplasPalabras:
+        if k in dictPalabras:dictPalabras[k]=dictPalabras[k]+v
+        else: dictPalabras[k]=v
+    listConteoPalabras=[(k,v) for k,v in dictPalabras.items()]
+    listConteoPalabras=list(sorted(listConteoPalabras,key=itemgetter(0)))
+    return listConteoPalabras
 
 
 def pregunta_03():
@@ -61,7 +76,16 @@ def pregunta_03():
     ]
 
     """
-    return
+    dictSumaPalabras={}
+    listFilas=datos()
+    listTuplasSuma=[(i[0],int(i[1])) for i in listFilas]
+    for k, v in listTuplasSuma:
+        if k in dictSumaPalabras:dictSumaPalabras[k]=dictSumaPalabras[k]+v
+        else: dictSumaPalabras[k]=v
+    listSumaValores=[(k,v) for k,v in dictSumaPalabras.items()]
+    listSumaValores=list(sorted(listSumaValores,key=itemgetter(0)))
+    return listSumaValores
+    
 
 
 def pregunta_04():
@@ -86,7 +110,15 @@ def pregunta_04():
     ]
 
     """
-    return
+    dictRegistroMes={}
+    listFilas=datos()
+    listTuplasMeses=[(i[2].split('-')[1],1) for i in listFilas]
+    for k, v in listTuplasMeses:
+        if k in dictRegistroMes:dictRegistroMes[k]=dictRegistroMes[k]+v
+        else: dictRegistroMes[k]=v
+    listRegistroMes=[(k,v) for k,v in dictRegistroMes.items()]
+    listRegistroMes=list(sorted(listRegistroMes,key=itemgetter(0)))
+    return listRegistroMes
 
 
 def pregunta_05():
@@ -104,7 +136,18 @@ def pregunta_05():
     ]
 
     """
-    return
+    dictLetras={}
+    listFilas=datos()
+    listTuplasMaxMin=[(i[0],[int(i[1]),int(i[1])]) for i in listFilas]
+    Maximo=lambda valor, ValorAnterior: valor if valor>=ValorAnterior else ValorAnterior
+    Minimo=lambda valor, ValorAnterior: valor if valor<=ValorAnterior else ValorAnterior
+    for k, v in listTuplasMaxMin:
+        if k in dictLetras:dictLetras[k]=[Maximo(dictLetras[k][0],v[0]),Minimo(dictLetras[k][1],v[1])]
+        else: dictLetras[k]=[Maximo(v[0],v[0]),Minimo(v[1],v[1])]
+    listMaxMin=[(k,v) for k,v in dictLetras.items()]
+    listMaxMin=list(sorted(listMaxMin,key=itemgetter(0)))
+    listMaxMin=[(k,v[0],v[1]) for k,v in listMaxMin]
+    return listMaxMin
 
 
 def pregunta_06():
@@ -129,7 +172,19 @@ def pregunta_06():
     ]
 
     """
-    return
+    dictCadenas={}
+    listCadenas=[i[4].split(',') for i in datos()]
+    listCadenas=reduce(lambda x,y:x+y,listCadenas)
+    listTuplasMaxMin=[(i.split(':')[0],[int(i.split(':')[1]),int(i.split(':')[1])]) for i in listCadenas]
+    Maximo=lambda valor, ValorAnterior: valor if valor>=ValorAnterior else ValorAnterior
+    Minimo=lambda valor, ValorAnterior: valor if valor<=ValorAnterior else ValorAnterior
+    for k, v in listTuplasMaxMin:
+        if k in dictCadenas:dictCadenas[k]=[Minimo(dictCadenas[k][0],v[0]),Maximo(dictCadenas[k][1],v[1])]
+        else: dictCadenas[k]=[Minimo(v[0],v[0]),Maximo(v[1],v[1])]
+    listMaxMin=[(k,v) for k,v in dictCadenas.items()]
+    listMaxMin=list(sorted(listMaxMin,key=itemgetter(0)))
+    listMaxMin=[(k,v[0],v[1]) for k,v in listMaxMin]
+    return listMaxMin
 
 
 def pregunta_07():
@@ -153,7 +208,16 @@ def pregunta_07():
     ]
 
     """
-    return
+    dictValores={}
+    listFilas=datos()
+    listTuplaC01=[(int(i[1]),[i[0]]) for i in listFilas]
+    for k, v in listTuplaC01:
+        if k in dictValores:dictValores[k]=dictValores[k]+v
+        else: dictValores[k]=v
+    listTuplaC01=[(k,v) for k, v in dictValores.items()]
+    listTuplaC01=list(sorted(listTuplaC01,key=itemgetter(0)))
+    return listTuplaC01
+
 
 
 def pregunta_08():
@@ -178,7 +242,16 @@ def pregunta_08():
     ]
 
     """
-    return
+    dictValores={}
+    listFilas=datos()
+    listTuplaC01=[(int(i[1]),[i[0]]) for i in listFilas]
+    for k, v in listTuplaC01:
+        if k in dictValores:dictValores[k]=dictValores[k]+v
+        else: dictValores[k]=v
+    listTuplaC01=[(k,v) for k, v in dictValores.items()]
+    listTuplaC01=[(k,list(sorted(set(v)))) for k, v in dictValores.items()]
+    listTuplaC01=list(sorted(listTuplaC01,key=itemgetter(0)))
+    return listTuplaC01
 
 
 def pregunta_09():
@@ -201,7 +274,17 @@ def pregunta_09():
     }
 
     """
-    return
+    dictCadenas={}
+    listCadenas=[i[4].split(',') for i in datos()]
+    listCadenas=reduce(lambda x,y:x+y,listCadenas)
+    listTuplasCadenas=[(i.split(':')[0],1) for i in listCadenas]
+    for k, v in listTuplasCadenas:
+        if k in dictCadenas:dictCadenas[k]=dictCadenas[k]+v
+        else: dictCadenas[k]=v
+    listTuplasCadenas=[(k,v) for k,v in dictCadenas.items()]
+    dictTuplasCadenas=dict(sorted(listTuplasCadenas,key=itemgetter(0)))
+    return dictTuplasCadenas
+
 
 
 def pregunta_10():
@@ -222,7 +305,12 @@ def pregunta_10():
 
 
     """
-    return
+    dictCadenas={}
+    listFilas=datos()
+    conteo=lambda x: len(x.split(','))
+    listTuplasLetraC45=[(i[0],conteo(i[3]),conteo(i[4])) for i in listFilas]
+    return listTuplasLetraC45
+
 
 
 def pregunta_11():
@@ -262,3 +350,16 @@ def pregunta_12():
 
     """
     return
+"""
+if __name__=='__main__':
+    print(pregunta_01())
+    print(pregunta_02())
+    print(pregunta_03())
+    print(pregunta_04())
+    print(pregunta_05())
+    print(pregunta_06())
+    print(pregunta_07())
+    print(pregunta_08())
+    print(pregunta_09())
+    print(pregunta_10())
+    """
