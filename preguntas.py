@@ -305,7 +305,6 @@ def pregunta_10():
 
 
     """
-    dictCadenas={}
     listFilas=datos()
     conteo=lambda x: len(x.split(','))
     listTuplasLetraC45=[(i[0],conteo(i[3]),conteo(i[4])) for i in listFilas]
@@ -331,7 +330,16 @@ def pregunta_11():
 
 
     """
-    return
+    dictletrasC4={}
+    listTuplasC4=[(i[3].split(','),i[1]) for i in datos()]
+    listTuplasC4=[(n,int(i[1]))  for i in listTuplasC4 for n in i[0]]
+    for k, v in listTuplasC4:
+        if k in dictletrasC4:dictletrasC4[k]=dictletrasC4[k]+v
+        else: dictletrasC4[k]=v
+    listTuplasC4=[(k,v) for k,v in dictletrasC4.items()]
+    dictTuplasC4=dict(sorted(listTuplasC4,key=itemgetter(0)))
+    return dictTuplasC4
+ 
 
 
 def pregunta_12():
@@ -349,10 +357,17 @@ def pregunta_12():
     }
 
     """
-    return
-"""
+    dictletrasC5={}
+    listletrasC5=[(i[0],sum([int(n.split(':')[-1]) for n in i[4].split(',')])) for i in datos()]
+    for k, v in listletrasC5:
+        if k in dictletrasC5:dictletrasC5[k]=dictletrasC5[k]+v
+        else: dictletrasC5[k]=v
+    dictletrasC5=dict(sorted(dictletrasC5.items()))
+    return dictletrasC5
+
+
 if __name__=='__main__':
-    print(pregunta_01())
+    """print(pregunta_01())
     print(pregunta_02())
     print(pregunta_03())
     print(pregunta_04())
@@ -362,4 +377,5 @@ if __name__=='__main__':
     print(pregunta_08())
     print(pregunta_09())
     print(pregunta_10())
-    """
+    print(pregunta_11())
+    print(pregunta_12())"""
